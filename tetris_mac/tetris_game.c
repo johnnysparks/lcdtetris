@@ -354,18 +354,6 @@ int BoardIsRowFilled(Board b, int row){
     return 1;
 }
 
-Board BoardRemoveFilledRows(Board b){
-
-    for( int row = 0; row < kBoardHeight; row++ ) {
-
-        if( BoardIsRowFilled(b, row) ){
-            b = BoardDeleteRow(b, row);
-        }
-    }
-
-    return b;
-}
-
 int BoardFilledRowCount(Board b){
 
     int count = 0;
@@ -406,6 +394,17 @@ Board BoardDeleteRow(Board b, int row){
     return b;
 }
 
+Board BoardRemoveFilledRows(Board b){
+
+    for( int row = 0; row < kBoardHeight; row++ ) {
+
+        if( BoardIsRowFilled(b, row) ){
+            b = BoardDeleteRow(b, row);
+        }
+    }
+
+    return b;
+}
 
 
 Game GameTick(Game g) {
@@ -462,15 +461,15 @@ Game GameMove(Game g, Direction d) {
     switch(d){
         case up: {
             // Up arrow changes piece direction
-
-            if (d == left) {
-                d = up;
+            Piece p = g.currentPiece;
+            Direction dir = p.direction;
+            if (dir == left) {
+                dir = up;
             } else {
-                d += 1;
+                dir += 1;
             }
 
-            Piece p = g.currentPiece;
-            p.direction = d;
+            p.direction = dir;
             if(BoardCanAddPiece(g.board, p)){
                 g.currentPiece = p;
             }

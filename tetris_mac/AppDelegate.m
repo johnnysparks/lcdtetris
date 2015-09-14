@@ -33,8 +33,6 @@
 
 - (void)gameTick
 {
-    NSLog(@"loop");
-
     self.game = GameTick(self.game);
     // Print the scene!
     [self render];

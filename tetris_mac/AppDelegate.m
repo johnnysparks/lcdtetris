@@ -10,10 +10,6 @@
 #import "AppDelegate.h"
 #import "KeyView.h"
 #import "tetris_game.h"
-#import <CoreGraphics/CoreGraphics.h>
-#import <Foundation/Foundation.h>
-
-
 
 
 @interface AppDelegate () <NSWindowDelegate>

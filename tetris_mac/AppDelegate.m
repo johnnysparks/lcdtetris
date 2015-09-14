@@ -561,94 +561,107 @@ void runTests() {
 
 }
 
+typedef struct Game {
+    int pieceFalling;
+    Piece currentPiece;
+    int gameOver;
+    Direction lastAction;
+    Board board;
+} Game;
+
+
 
 @interface AppDelegate () <NSWindowDelegate>
 
 @property (weak) IBOutlet NSWindow *window;
 @property (nonatomic, copy) NSArray *tileViews;
-@property (nonatomic) Board b;
-
-
 @property(nonatomic, strong) KeyView *keyView;
-@property(nonatomic) int pieceFalling;
-@property(nonatomic) Piece currentPiece;
-@property(nonatomic) int gameOver;
-@property(nonatomic) Direction lastAction;
-@property(nonatomic, strong) id keyMonitor;
 @property(nonatomic, strong) NSTimer *timer;
+
+
+@property(nonatomic) Game game;
+
+
 @end
 
 @implementation AppDelegate
 
-- (void)gameLoop
+- (void)gameTick
 {
     NSLog(@"loop");
-    // Check to see if we need to add a new peice to the top of the board
-    if(self.pieceFalling < 1){
 
-        Piece startPiece = PieceRandomStarting();
-        startPiece.x = 2;
-
-        // If we can't add the piece, it must be game over
-        if(!BoardCanAddPiece(self.b, startPiece)){
-//            self.gameOver = 1;
-            self.b = kEmptyBoard;
-            [self render];
-            return;
-        }
-
-        // Add the starting piece, and start dropping it
-        self.currentPiece = startPiece;
-        self.pieceFalling = 1;
-    } else {
-
-        // Finally drop the piece down, or lock it if it can't be added
-        Piece p = self.currentPiece;
-        p.y += 1;
-
-        if(BoardCanAddPiece(self.b, p)){
-
-            self.currentPiece = p;
-
-        } else {
-
-            self.b = BoardAddPiece(self.b, self.currentPiece);
-            self.pieceFalling = 0;
-
-            // Once locked, clear our rows and add some points
-            int rowsToClear = BoardFilledRowCount(self.b);
-
-            if(rowsToClear){
-                NSLog(@"cleared %i rows!", rowsToClear);
-            }
-
-            self.b = BoardRemoveFilledRows(self.b);
-        }
-    }
-
+    self.game = GameTick(self.game);
     // Print the scene!
     [self render];
 }
 
 
-- (void)move
-{
+Game GameTick(Game g) {
+    // Check to see if we need to add a new peice to the top of the board
+    if(g.pieceFalling < 1){
+
+        Piece startPiece = PieceRandomStarting();
+        startPiece.x = 2;
+
+        // If we can't add the piece, it must be game over
+        if(!BoardCanAddPiece(g.board, startPiece)){
+            g.gameOver = 1;
+            g.board = kEmptyBoard;
+            return g;
+        }
+
+        // Add the starting piece, and start dropping it
+        g.currentPiece = startPiece;
+        g.pieceFalling = 1;
+    } else {
+
+        // Finally drop the piece down, or lock it if it can't be added
+        Piece p = g.currentPiece;
+        p.y += 1;
+
+        if(BoardCanAddPiece(g.board, p)){
+
+            g.currentPiece = p;
+
+        } else {
+
+            g.board = BoardAddPiece(g.board, g.currentPiece);
+            g.pieceFalling = 0;
+
+            // Once locked, clear our rows and add some points
+            int rowsToClear = BoardFilledRowCount(g.board);
+
+            if(rowsToClear){
+                NSLog(@"cleared %i rows!", rowsToClear);
+            }
+
+            g.board = BoardRemoveFilledRows(g.board);
+        }
+    }
+
+    return g;
+}
+
+
+Game GameMove(Game g) {
+
     // Update position of falling peice from keypress if possible
-    switch(self.lastAction){
+
+    switch(g.lastAction){
 
         case up: {
             // Up arrow changes piece direction
 
-            Direction d = self.currentPiece.direction;
+            Direction d = g.currentPiece.direction;
             if (d == left) {
                 d = up;
             } else {
                 d += 1;
             }
-            Piece p = self.currentPiece;
+            Piece p = g.currentPiece;
             p.direction = d;
-            if(BoardCanAddPiece(self.b, p)){
-                self.currentPiece = p;
+            if(BoardCanAddPiece(g.board, p)){
+                g.currentPiece = p;
 
             }
         } break;
@@ -656,29 +669,29 @@ void runTests() {
         case right:{
 
             // Move Right if possible
-            Piece p = self.currentPiece;
+            Piece p = g.currentPiece;
             p.x -= 1;
-            if(BoardCanAddPiece(self.b, p)){
-                self.currentPiece = p;
+            if(BoardCanAddPiece(g.board, p)){
+                g.currentPiece = p;
             }
         } break;
 
         case down:{
             // Move Right if possible
-            Piece p = self.currentPiece;
+            Piece p = g.currentPiece;
             p.y += 1;
-            if(BoardCanAddPiece(self.b, p)){
-                self.currentPiece = p;
+            if(BoardCanAddPiece(g.board, p)){
+                g.currentPiece = p;
             }
 
         } break;
 
         case left:{
             // Move Right if possible
-            Piece p = self.currentPiece;
+            Piece p = g.currentPiece;
             p.x += 1;
-            if(BoardCanAddPiece(self.b, p)){
-                self.currentPiece = p;
+            if(BoardCanAddPiece(g.board, p)){
+                g.currentPiece = p;
             }
 
         } break;
@@ -687,12 +700,16 @@ void runTests() {
     }
 
     // Clear out the last action
-    self.lastAction = none;
+    g.lastAction = none;
 
+    return g;
+};
+
+- (void)move
+{
+    self.game = GameMove(self.game);
     [self render];
 }
-
-
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -702,13 +719,18 @@ void runTests() {
 
     self.window.delegate = self;
 
+    Game g = {};
+    self.game = g;
+
     self.keyView = [[KeyView alloc] initWithFrame:[self.window.contentView bounds]];
     [self.window.contentView resignFirstResponder];
     [self.keyView becomeFirstResponder];
     self.keyView.wantsLayer = YES;
 
     self.keyView.onPress = ^(int direction){
-        self.lastAction = (Direction)direction;
+        Game g = self.game;
+        g.lastAction = (Direction)direction;
+        self.game = g;
         [self move];
     };
 
@@ -718,14 +740,10 @@ void runTests() {
     }
     
     [self.window.contentView addSubview:self.keyView];
-    
-    self.gameOver = 0;
-    self.pieceFalling = 0;
-    self.b = kEmptyBoard;
 
     [self render];
 
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(gameLoop) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(gameTick) userInfo:nil repeats:YES];
 }
 
 
@@ -769,9 +787,10 @@ void runTests() {
         }
     };
 
-    Board b = self.b;
-    if(self.pieceFalling){
-        b = BoardAddPiece(self.b, self.currentPiece);
+    Game g = self.game;
+    Board b = g.board;
+    if(g.pieceFalling){
+        b = BoardAddPiece(g.board, g.currentPiece);
     }
 
     u_int tile = 0;
@@ -806,6 +825,7 @@ void runTests() {
             tile++;
         }
     }
+    self.game = g;
 }
 
 

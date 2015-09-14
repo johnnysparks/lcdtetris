@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB2ED0B0296EE5477E8FB801 /* tetris_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2EDFA1E75480A230144C34 /* tetris_macTests.m */; };
 		BB2ED0C1B1184D32A9C2505A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB2EDD043130513CF5DA2365 /* Images.xcassets */; };
+		BB2ED440FF68C6E8E9A7E1BF /* tetris_game.c in Sources */ = {isa = PBXBuildFile; fileRef = BB2EDAD71B1FC98F15A939CB /* tetris_game.c */; };
 		BB2ED87AAA236FA59DC1D844 /* KeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2EDDF72470128630871D0D /* KeyView.m */; };
 		BB2EDA37AC7E139FE2E47774 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB2ED704D5AB776CD88550A7 /* MainMenu.xib */; };
 		BB2EDA39BD4CA51D2C0DD4F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2ED9E4A90D91A05D7DD63D /* AppDelegate.m */; };
@@ -30,9 +31,11 @@
 		BB2ED1712F48AA1D03796306 /* tetris_mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tetris_mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB2ED331B0B8257E63F99767 /* tetris_macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tetris_macTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB2ED5BE7B7E70D7F8110CEF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB2ED77B42E1E27EEB267B60 /* tetris_game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tetris_game.h; sourceTree = "<group>"; };
 		BB2ED819BA1781A6933C4A3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		BB2ED9E4A90D91A05D7DD63D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BB2EDA9FB4FCFF525B5918F6 /* KeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyView.h; sourceTree = "<group>"; };
+		BB2EDAD71B1FC98F15A939CB /* tetris_game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tetris_game.c; sourceTree = "<group>"; };
 		BB2EDD043130513CF5DA2365 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BB2EDDF72470128630871D0D /* KeyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyView.m; sourceTree = "<group>"; };
 		BB2EDE5D0381CA3C66C26227 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -68,6 +71,8 @@
 				BB2ED704D5AB776CD88550A7 /* MainMenu.xib */,
 				BB2EDDF72470128630871D0D /* KeyView.m */,
 				BB2EDA9FB4FCFF525B5918F6 /* KeyView.h */,
+				BB2EDAD71B1FC98F15A939CB /* tetris_game.c */,
+				BB2ED77B42E1E27EEB267B60 /* tetris_game.h */,
 			);
 			path = tetris_mac;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 				BB2EDA39BD4CA51D2C0DD4F7 /* AppDelegate.m in Sources */,
 				BB2EDAE2929D4E0252062C10 /* main.m in Sources */,
 				BB2ED87AAA236FA59DC1D844 /* KeyView.m in Sources */,
+				BB2ED440FF68C6E8E9A7E1BF /* tetris_game.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

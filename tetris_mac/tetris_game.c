@@ -486,7 +486,7 @@ Game GameMove(Game g, Direction d) {
         } break;
 
         case down:{
-            // Move Right if possible
+            // Move Down if possible
             Piece p = g.currentPiece;
             p.y += 1;
             if(BoardCanAddPiece(g.board, p)){
@@ -496,7 +496,7 @@ Game GameMove(Game g, Direction d) {
         } break;
 
         case left:{
-            // Move Right if possible
+            // Move Left if possible
             Piece p = g.currentPiece;
             p.x += 1;
             if(BoardCanAddPiece(g.board, p)){

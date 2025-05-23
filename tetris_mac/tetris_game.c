@@ -522,7 +522,7 @@ void test(int passed){
 
 void runTests() {
 
-    printf("Begining tests: \n------------------ \n");
+    printf("Beginning tests: \n------------------ \n");
 
     Board a = kEmptyBoard;
     Board b = kEmptyBoard;
